@@ -1,7 +1,7 @@
 % Constants: change these to sensible things
 hbar = 1;
 m = 1;
-E = 1; % get this one from "allowedenergies.m" (just read it out of the table)
+E = 1.406; % get this one from "allowedenergies.m" (just read it out of the table)
 V0 = 2; % energy level of barrier
 a = 1; % width of barrier
 
@@ -17,12 +17,12 @@ rhs_b = @(x,u)[u(2); -2*m*E./hbar^2 * u(1)];
 % the barrier. 
 % make the derivative initial condition zero if you choose a max
 % fix to be more accurate later. 
-u0_b = [0.5, 0];
+u0_b = [15, 0];
 % this is where the initial condition is defined at
-xinitial_b = -3; % fix later
+xinitial_b = -5; % fix later
 % place xfinal a little bit after the barrier starts
 % barrier starts at 0 - a, so:
-xfinal_b = -1*a+0.5;
+xfinal_b = -1*a;
 % before barrier solution
 [x_b, u_b] = ode45(rhs_b,[xinitial_b, xfinal_b], u0_b);
 
@@ -36,7 +36,7 @@ u_b_d_interp = interp1(x_b(:,1),u_b(:,2),xgrid,'spline');
 % rhs function for this part
 rhs_i = @(x,u)[u(2); -2*m*(E-V0)./hbar^2 * u(1)];
 xinitial_i = -1*a; % this is where the barrier starts
-xfinal_i = a+0.5; % went out a bit so the solution covers it
+xfinal_i = a; % went out a bit so the solution covers it
 % initial condition is the value of the PREVIOUS step at the barrier
 % beginning
 
@@ -90,5 +90,13 @@ u0_a = [u_i_interp(barrindex),u_i_d_interp(barrindex)];
 % u_a from a to xfinal_a
 
 
+figure
+hold on
+
+plot(x_b,u_b(:,2))
+
+plot(x_i,u_i(:,2))
+
+plot(x_a,u_a(:,2))
 
 
