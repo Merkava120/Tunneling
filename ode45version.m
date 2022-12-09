@@ -2,7 +2,7 @@
 hbar = 1;
 m = 1;
 E = 1.406; % get this one from "allowedenergies.m" (just read it out of the table)
-V0 = 2; % energy level of barrier
+V0 = 3; % energy level of barrier
 a = 1; % width of barrier
 
 %% STEP 1: BEFORE THE BARRIER
@@ -93,10 +93,13 @@ u0_a = [u_i_interp(barrindex),u_i_d_interp(barrindex)];
 figure
 hold on
 
-plot(x_b,u_b(:,2))
+newx = [x_b.',x_i.',x_a.'];
+newy = [u_b(:,2).',u_i(:,2).',u_a(:,2).'];
 
-plot(x_i,u_i(:,2))
+prob = abs(newy).*2;
 
-plot(x_a,u_a(:,2))
-
+plot(newx(1:(end-700)),prob(1:(end-700)))
+xlabel("x")
+ylabel("probability density function")
+title("Finite square barrier, hbar = 1, m = 1, a = 1")
 

@@ -5,7 +5,7 @@ m = 1;
 hbar = 1;
 V0 = 3;
 a = 1;
-energy =1.73;
+energy = 1.4060;
 
 %Assumption of infinity
 in = 10;

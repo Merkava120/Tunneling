@@ -1,5 +1,4 @@
-%% Testing infinite square well
-%Jordan Grow, Russel Anderson, Mitchell Hilbig, McKenna Myckowiak
+%% Testing harmonic oscillator
 %Constants
 m = 1;
 hbar = 1;
@@ -22,11 +21,10 @@ solution = bvp4c(rhs_isw,rhs_bounds,solinit);
 normfunc = solution.y(1,:)/norm(solution.y(1,:));
 probability = normfunc.^2;
 plot(solution.x,probability)
-endg
+end
 xlabel("x")
 ylabel("probability density")
-legend("E0",'E1','E2',"E3","E4","E5","E6","E7","E8","E9")
-title("Infinite square well hbar = 1, m = 1, a = 1")
+legend("E0",'E1','E2',"E3","E4","E5","E6","E7","E8","E")
 
 %Plan:
 %Develop models for the finite square well
