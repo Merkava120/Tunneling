@@ -26,7 +26,11 @@ xfinal_b = -1*a+0.5;
 % before barrier solution
 [x_b, u_b] = ode45(rhs_b,[xinitial_b, xfinal_b], u0_b);
 
-
+% Interpolate to get solution value because it's not in the array
+dx = 0.001;
+xgrid = xinitial_b:dx:xfinal_b;
+u_b_interp = interp1(x_b(:,1), u_b(:,1),xgrid,'spline');
+u_b_d_interp = interp1(x_b(:,1),u_b(:,2),xgrid,'spline');
 
 %% STEP 2: INSIDE THE BARRIER
 % rhs function for this part
@@ -38,27 +42,47 @@ xfinal_i = a+0.5; % went out a bit so the solution covers it
 
 % Goal here is to find the index of x variable at the beginning of the
 % barrier, -1*a
-barrindex = find(x_b(:,1)==-1*a,1);
+%barrindex = find(x_b(:,1)==-1*a,1);
 % then use that index to find the value of the func at -1*a and its first
 % derivative - these are the initial conditions
-u0_i = [u_b(barrindex,1), u_b(barrindex,2)];
+%u0_i = [u_b(barrindex,1), u_b(barrindex,2)];
+
+% Above doesn't work, 'find' needs exact match
+% interpolation might help:
+barrindex = find(xgrid==-1*a,1);
+u0_i = [u_b_interp(barrindex),u_b_d_interp(barrindex)];
+
+
+
 
 % now just solve
 [x_i, u_i] = ode45(rhs_i,[xinitial_i, xfinal_i], u0_i);
 
+% aaand interpolate this one now
+% just redefine xgrid
+xgrid = xinitial_i:dx:xfinal_i;
+u_i_interp = interp1(x_i(:,1),u_i(:,1),xgrid, 'spline');
+u_i_d_interp = interp1(x_i(:,1),u_i(:,2),xgrid, 'spline');
+
 %% PART 3 AFTER THE BARRIER
 
 % same rhs function from first step
+rhs_a = @(x,u)[u(2); -2*m*E./hbar^2 * u(1)];
 xinitial_a = xfinal_i; % end of barrier
 xfinal_a = 100; % whatever you want
 
 % find index of end of barrier:
-barrindex2 = find(x_i(:,1)==a,1);
+%barrindex2 = find(x_i(:,1)==a,1);
 % initial conditions for after-barrier are the end of the barrier
-u0_i = [u_i(barrindex,1), u_i(barrindex,2)];
+%u0_i = [u_i(barrindex,1), u_i(barrindex,2)];
+
+% Above doesn't work, 'find' needs exact match
+% interpolation might help:
+barrindex = find(xgrid==a,1);
+u0_a = [u_i_interp(barrindex),u_i_d_interp(barrindex)];
 
 % solve!
-[x_a, u_a] = ode45(rhs_b,[xinitial_a,xfinal_a,u0_a]);
+[x_a, u_a] = ode45(rhs_a,[xinitial_a,xfinal_a],u0_a);
 
 % after this make a function that is all the u's:
 % u_b from xinitial_b to -1*a
