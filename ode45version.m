@@ -66,5 +66,7 @@ u0_i = [u_i(barrindex,1), u_i(barrindex,2)];
 % u_a from a to xfinal_a
 
 
+%% Plot Coefficients
 
+T = ( 1 + (( (V0).^(2) ) ./ ( 4.*Evals.*(V0-Evals))) .* sinh( ((2.*a)./hbar) .* sqrt( 2.*m.*(V0-Evals) ) ).^2).^(-1)
 

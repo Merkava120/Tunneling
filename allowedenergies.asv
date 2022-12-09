@@ -127,3 +127,4 @@ ylabel 'Coefficients Values'
 legend ('Transmission Probability', 'Reflection Probability')
 xlim([0,20])
 
+Evalues
