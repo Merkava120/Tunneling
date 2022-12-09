@@ -7,7 +7,7 @@ a = 1;
 %% 
 %Energy must be less than V0
 etau = 0.1;
-E = 0:etau:v0 - etau;
+E = 0:etau:V0 - etau;
 
 
 
@@ -56,4 +56,16 @@ l = zshortened ./ a;
 Evals = ((hbar * l).^2 ./ (2*m)) - V0;
 
 
+%% Transmission Coefficients
 
+T = ( 1 + (( (V0).^(2) ) ./ ( 4.*Evals.*(V0-Evals))) .* sinh( ((2.*a)./hbar) .* sqrt( 2.*m.*(V0-Evals) ) ).^2).^(-1)
+
+R = 1-T
+
+%x = 0:0.5:10
+%t = 0:0.5:10
+%plot(t, sinh(x))
+%hold on
+%plot(t,cosh(x))
+%hold off
+%legend ('sinh(x)', 'cosh(x)')
